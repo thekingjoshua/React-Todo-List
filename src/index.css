@@ -31,7 +31,7 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    cursor: pointer;
+
   }
   @media screen and (max-width: 480px) {
     .wrapper .app{
@@ -149,11 +149,13 @@
     color: #744bc0;
     font-size: 1.5rem;
     margin-right: 1rem;
+    cursor: pointer;
   }
   .wrapper .app ul li p .mark-alt {
     color: #636363;
     font-size: 1.5rem;
     margin-right: 1rem;
+    cursor: pointer;
   }
   .wrapper .app ul li a:hover > i {
     color: #744bc0;
@@ -193,6 +195,7 @@
     height: 30px;
     cursor: pointer;
     transition: all ease-in-out 0.35s;
+    cursor: pointer;
   }
   .wrapper .app ul li span i {
     font-size: 20px;
