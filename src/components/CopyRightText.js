@@ -3,7 +3,7 @@ function CopyRightText() {
 		<p id="copyright">
 			Built with ⚛️ by
 			<strong>
-				<a href="google.com" target="_blank">
+				<a href="https://www.linkedin.com/in/thekingjoshua/" target="_blank">
 					{' '}
 					KingJoshua
 				</a>
