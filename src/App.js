@@ -11,7 +11,7 @@ import CopyRightText from './components/CopyRightText';
 function App() {
 	const [taskItem, setTaskItem] = useState(function () {
 		const storedTasks = localStorage.getItem('tasks');
-		return JSON.parse(storedTasks);
+		return storedTasks ? JSON.parse(storedTasks) : []
 	});
 
 	const completedTasks = taskItem.filter(item => item.completed);
