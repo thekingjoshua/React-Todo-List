@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './index.css';
 import React from 'react';
 import 'font-awesome/css/font-awesome.min.css';
@@ -9,14 +9,16 @@ import HeaderComponent from './components/HeaderComponent';
 import AddNewItemBtn from './components/AddNewItemBtn';
 import CopyRightText from './components/CopyRightText';
 function App() {
-	const oldTaskItem = [
-		{ id: 1, text: 'Code', completed: true },
-		{ id: 2, text: 'Take a Break', completed: true },
-		{ id: 3, text: 'Conquer the World', completed: false },
-	];
-	const [taskItem, setTaskItem] = useState(oldTaskItem);
+	const [taskItem, setTaskItem] = useState(function () {
+		const storedTasks = localStorage.getItem('tasks');
+		return JSON.parse(storedTasks);
+	});
+
 	const completedTasks = taskItem.filter(item => item.completed);
 	const notCompletedTasks = taskItem.filter(item => !item.completed);
+
+	const [taskText, setTaskText] = useState('');
+
 	function handleAddNewTaskItem() {
 		const newTaskItem = { id: Date.now(), text: 'New Task', completed: false };
 		setTaskItem(items => [...items, newTaskItem]);
@@ -29,6 +31,21 @@ function App() {
 	function handleDeletingTasks(id) {
 		setTaskItem(items => items.filter(item => item.id !== id));
 	}
+
+	useEffect(
+		function () {
+			localStorage.setItem('tasks', JSON.stringify(taskItem));
+		},
+		[taskText, taskItem]
+	);
+
+	function inputOnChange(e, id) {
+		setTaskText(e.target.value);
+		setTaskItem(items =>
+			items.map(item => (item.id === id ? { ...item, text: e.target.value } : item))
+		);
+	}
+
 	return (
 		<div className="wrapper">
 			<div className="align">
@@ -43,18 +60,22 @@ function App() {
 					</div>
 					<ul>
 						<HeaderComponent />
-						{taskItem.map(item => (
-							<TaskItem
-								text={item.text}
-								key={item.id}
-								id={item.id}
-								onHandleCompletedTaskItem={handleCompletedTaskItem}
-								onHandleDeletingTasks={handleDeletingTasks}
-								isCompleted={item.completed}
-							>
-								{item.text}
-							</TaskItem>
-						))}
+						{taskItem.length < 1 ? (
+							<p className='empty_task'>No task added yet...</p>
+						) : (
+							taskItem.map(item => (
+								<TaskItem
+									text={item.text}
+									key={item.id}
+									id={item.id}
+									onHandleCompletedTaskItem={handleCompletedTaskItem}
+									onHandleDeletingTasks={handleDeletingTasks}
+									isCompleted={item.completed}
+								>
+									<input type="text" value={item.text} onChange={e => inputOnChange(e, item.id)} />
+								</TaskItem>
+							))
+						)}
 					</ul>
 					<AddNewItemBtn onHandleAddNewTaskItem={handleAddNewTaskItem} />
 				</div>
