@@ -11,7 +11,7 @@ import CopyRightText from './components/CopyRightText';
 function App() {
 	const [taskItem, setTaskItem] = useState(function () {
 		const storedTasks = localStorage.getItem('tasks');
-		return storedTasks ? JSON.parse(storedTasks) : []
+		return storedTasks ? JSON.parse(storedTasks) : [];
 	});
 
 	const completedTasks = taskItem.filter(item => item.completed);
@@ -35,6 +35,7 @@ function App() {
 	useEffect(
 		function () {
 			localStorage.setItem('tasks', JSON.stringify(taskItem));
+			console.log(taskText);
 		},
 		[taskText, taskItem]
 	);
@@ -61,7 +62,7 @@ function App() {
 					<ul>
 						<HeaderComponent />
 						{taskItem.length < 1 ? (
-							<p className='empty_task'>No task added yet...</p>
+							<p className="empty_task">No task added yet...</p>
 						) : (
 							taskItem.map(item => (
 								<TaskItem
@@ -72,7 +73,12 @@ function App() {
 									onHandleDeletingTasks={handleDeletingTasks}
 									isCompleted={item.completed}
 								>
-									<input type="text" value={item.text} onChange={e => inputOnChange(e, item.id)} />
+									<input
+										type="text"
+										value={item.text}
+										onChange={e => inputOnChange(e, item.id)}
+										disabled={item.completed ? true : false}
+									/>
 								</TaskItem>
 							))
 						)}
